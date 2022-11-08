@@ -1,6 +1,7 @@
 package com.aninfo;
 
 import com.aninfo.model.Account;
+import com.aninfo.model.Transaction;
 import com.aninfo.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -75,12 +76,41 @@ public class Memo1BankApp {
 		return accountService.deposit(cbu, sum);
 	}
 
+	@GetMapping("/transactions/transactionId/{transactionID}")
+	public ResponseEntity<Transaction> getTransactionById(@PathVariable Long transactionID){
+		return ResponseEntity.of(accountService.getTransactionService().getATransactionById(transactionID));
+	}
+
+	@GetMapping("/transactions")
+	public Collection<Transaction> getTransactions(){
+		return accountService.getTransactionService().getAllTransactions();
+	}
+
+	@PostMapping("/accounts/withdraw")
+	@ResponseStatus(HttpStatus.CREATED)
+	public Transaction postWithdraw(@RequestBody Transaction transaction){
+		return accountService.newTransactionWithdraw(transaction);
+	}
+
+	@PostMapping("/accounts/deposit")
+	@ResponseStatus(HttpStatus.CREATED)
+	public Transaction postDeposit(@RequestBody Transaction transaction){
+		return accountService.newTransactionDeposit(transaction);
+	}
+
+	@DeleteMapping("/transactions/{transactionID}")
+	public void deleteTransactionById(@PathVariable Long transactionID){
+		accountService.deleteById(transactionID);
+	}
+
+
+
 	@Bean
 	public Docket apiDocket() {
 		return new Docket(DocumentationType.SWAGGER_2)
-			.select()
-			.apis(RequestHandlerSelectors.any())
-			.paths(PathSelectors.any())
-			.build();
+				.select()
+				.apis(RequestHandlerSelectors.any())
+				.paths(PathSelectors.any())
+				.build();
 	}
 }

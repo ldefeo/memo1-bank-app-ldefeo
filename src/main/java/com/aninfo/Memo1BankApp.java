@@ -77,9 +77,9 @@ public class Memo1BankApp {
 		return accountService.deposit(cbu, sum);
 	}
 
-	@GetMapping("/transactions/transactionId/{transactionID}")
-	public ResponseEntity<Transaction> getTransactionById(@PathVariable Long transactionID){
-		return ResponseEntity.of(accountService.getTransactionService().getATransactionById(transactionID));
+	@GetMapping("/transactions/transactionId/{transactionId}")
+	public ResponseEntity<Transaction> getTransactionById(@PathVariable Long transactionId){
+		return ResponseEntity.of(accountService.getTransactionService().getATransactionById(transactionId));
 	}
 
 	@GetMapping("/transactions")
@@ -104,9 +104,9 @@ public class Memo1BankApp {
 		return accountService.getTransactionService().getTransactionsByCbu(cbu);
 	}
 
-	@DeleteMapping("/transactions/{transactionID}")
-	public void deleteTransactionById(@PathVariable Long transactionID){
-		accountService.deleteById(transactionID);
+	@DeleteMapping("/transactions/{transactionId}")
+	public void deleteTransactionById(@PathVariable Long transactionId){
+		accountService.deleteById(transactionId);
 	}
 
 

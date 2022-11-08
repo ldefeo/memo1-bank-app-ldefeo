@@ -11,18 +11,18 @@ public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long transactionID;
+    private Long transactionId;
 
     public Transaction(){
 
     }
 
     public void setTransactionId(Long transactionID){
-        this.transactionID = transactionID;
+        this.transactionId = transactionId;
     }
 
     public Long getTransactionId(){
-        return transactionID;
+        return transactionId;
     }
 
     public void setAmount(Double amount){

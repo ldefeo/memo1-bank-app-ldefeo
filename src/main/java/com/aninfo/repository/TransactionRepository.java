@@ -15,6 +15,6 @@ public interface TransactionRepository extends CrudRepository<Transaction, Long>
     List<Transaction> findAll();
 
 
-    Transaction findTransactionByCbu(Long cbu);
+    List<Transaction> findTransactionsByCbu(Long cbu);
 
 }

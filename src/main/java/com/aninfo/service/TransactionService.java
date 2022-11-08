@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -18,39 +19,34 @@ public class TransactionService {
     @Autowired
     private TransactionRepository transactionRepository;
 
-    public Transaction createTransaction(Transaction transaction){
+    public Transaction createTransaction(Transaction transaction) {
         return transactionRepository.save(transaction);
     }
 
     //getAll
-    public Collection<Transaction> getAllTransactions(){
+    public Collection<Transaction> getAllTransactions() {
         return transactionRepository.findAll();
     }
 
 
     //getOneById
-    public Optional<Transaction> getATransactionById(Long transactionId){
+    public Optional<Transaction> getATransactionById(Long transactionId) {
         return transactionRepository.findById(transactionId);
+    }
+
+    public List<Transaction> getTransactionsByCbu(Long cbu){
+        return transactionRepository.findTransactionsByCbu(cbu);
     }
 
 
     //deleteOneById
-    public void deleteById(Long transactionId){
+    public void deleteTransaction(Long transactionId) {
         transactionRepository.deleteById(transactionId);
     }
 
-    //deleteOneByCbu
-    public void deleteByCbu(Long cbu){
-        for(Transaction transaction: transactionRepository.findAll()){
-            if(transaction.getCbu().equals(cbu)){
-                transactionRepository.delete(transaction);
-            }
-        }
-    }
+    public Transaction transactionWithdraw(Transaction transaction) {
 
-    public Transaction withdraw(Transaction transaction){
-
-        if(transaction.getAmount() <= 0){
+        if (transaction.getAmount() <= 0) {
             throw new InsufficientFundsException("Saldo insuficiente");
         }
 
@@ -59,7 +55,7 @@ public class TransactionService {
         return transactionRepository.save(transaction);
     }
 
-    public Transaction deposit(Transaction transaction){
+    public Transaction transactionDeposit(Transaction transaction) {
 
         transaction.setAmount(this.applyDescount(transaction.getAmount()));
         if(transaction.getAmount() <= 0){
@@ -77,4 +73,5 @@ public class TransactionService {
         }
         return sum;
     }
+
 }

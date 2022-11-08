@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -88,14 +89,19 @@ public class Memo1BankApp {
 
 	@PostMapping("/accounts/withdraw")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Transaction postWithdraw(@RequestBody Transaction transaction){
+	public Transaction newTransactionWithdraw(@RequestBody Transaction transaction){
 		return accountService.newTransactionWithdraw(transaction);
 	}
 
 	@PostMapping("/accounts/deposit")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Transaction postDeposit(@RequestBody Transaction transaction){
+	public Transaction newTransactionDeposit(@RequestBody Transaction transaction){
 		return accountService.newTransactionDeposit(transaction);
+	}
+
+	@GetMapping("/transactions/{cbu}")
+	public List<Transaction> getTransactionsByCbu(@PathVariable Long cbu){
+		return accountService.getTransactionService().getTransactionsByCbu(cbu);
 	}
 
 	@DeleteMapping("/transactions/{transactionID}")

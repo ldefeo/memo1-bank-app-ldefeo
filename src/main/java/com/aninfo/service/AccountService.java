@@ -56,31 +56,38 @@ public class AccountService {
     @Transactional
     public Account deposit(Long cbu, Double sum) {
 
+        Double count = 0.0;
         if (sum <= 0) {
             throw new DepositNegativeSumException("Cannot deposit negative sums");
+        }else if(sum>=2000 && sum<=5000){
+            count = sum*0.1;
+        }else if(sum>5000){
+            count = 500.0;
         }
-
         Account account = accountRepository.findAccountByCbu(cbu);
-        account.setBalance(account.getBalance() + sum);
+        account.setBalance(account.getBalance() + sum + count);
         accountRepository.save(account);
 
         return account;
     }
 
-    @Transactional
     public Transaction newTransactionWithdraw(Transaction transaction){
 
-        Account account = withdraw(accountRepository.findAccountByCbu(transaction.getCbu()).getCbu(),transaction.getAmount());
+        withdraw(accountRepository.findAccountByCbu(transaction.getCbu()).getCbu(),transaction.getAmount());
 
-        return transactionService.withdraw(transaction);
+        return transactionService.transactionWithdraw(transaction);
     }
 
-    @Transactional
     public Transaction newTransactionDeposit(Transaction transaction){
+        Double count = 0.0;
+        if(transaction.getAmount() >= 2000 && transaction.getAmount() <= 5000){
+            count = transaction.getAmount()*0.1;
+        }else if(transaction.getAmount() > 5000){
+            count = 500.00;
+        }
+        deposit(accountRepository.findAccountByCbu(transaction.getCbu()).getCbu(),transaction.getAmount()+count);
 
-        Account account = deposit(accountRepository.findAccountByCbu(transaction.getCbu()).getCbu(),transaction.getAmount());
-
-        return transactionService.deposit(transaction);
+        return transactionService.transactionDeposit(transaction);
     }
 
     public TransactionService getTransactionService(){

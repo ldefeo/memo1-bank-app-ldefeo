@@ -90,13 +90,13 @@ public class Memo1BankApp {
 	@PostMapping("/accounts/withdraw")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Transaction newTransactionWithdraw(@RequestBody Transaction transaction){
-		return accountService.newTransactionWithdraw(transaction);
+		return accountService.newAccountTransactionWithdraw(transaction);
 	}
 
 	@PostMapping("/accounts/deposit")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Transaction newTransactionDeposit(@RequestBody Transaction transaction){
-		return accountService.newTransactionDeposit(transaction);
+		return accountService.newAccountTransactionDeposit(transaction);
 	}
 
 	@GetMapping("/transactions/{cbu}")

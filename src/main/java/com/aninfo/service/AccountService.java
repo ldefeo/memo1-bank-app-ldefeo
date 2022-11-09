@@ -71,14 +71,14 @@ public class AccountService {
         return account;
     }
 
-    public Transaction newTransactionWithdraw(Transaction transaction){
+    public Transaction newAccountTransactionWithdraw(Transaction transaction){
 
         withdraw(accountRepository.findAccountByCbu(transaction.getCbu()).getCbu(),transaction.getAmount());
 
         return transactionService.transactionWithdraw(transaction);
     }
 
-    public Transaction newTransactionDeposit(Transaction transaction){
+    public Transaction newAccountTransactionDeposit(Transaction transaction){
         Double count = 0.0;
         if(transaction.getAmount() <= 0){
             throw new DepositNegativeSumException("no se puede depositar negativo");

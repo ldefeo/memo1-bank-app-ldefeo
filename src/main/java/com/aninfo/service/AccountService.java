@@ -58,6 +58,7 @@ public class AccountService {
     public Account deposit(Long cbu, Double sum) {
 
         Double count = 0.0;
+
         if (sum <= 0) {
             throw new DepositNegativeSumException("Cannot deposit negative sums");
         }else if(sum>=2000 && sum<=5000){
@@ -66,9 +67,6 @@ public class AccountService {
             count = 500.0;
         }
         Account account = accountRepository.findAccountByCbu(cbu);
-        if(account == null){
-            throw new InvalidTransactionTypeException("no existe transaccion");
-        }
         account.setBalance(account.getBalance() + sum + count);
         accountRepository.save(account);
 
@@ -87,6 +85,10 @@ public class AccountService {
 
     public Transaction newAccountTransactionDeposit(Transaction transaction){
         Double count = 0.0;
+        Account account = accountRepository.findAccountByCbu(transaction.getCbu());
+        if(account == null){
+            throw new InvalidTransactionTypeException("no existe transaccion");
+        }
         if(transaction.getAmount() <= 0){
             throw new DepositNegativeSumException("no se puede depositar negativo");
         }
@@ -95,10 +97,7 @@ public class AccountService {
         }else if(transaction.getAmount() > 5000){
             count = 500.00;
         }
-        Account account = accountRepository.findAccountByCbu(transaction.getCbu());
-        if(account == null){
-            throw new InvalidTransactionTypeException("no existe transaccion");
-        }
+
         deposit(account.getCbu(),transaction.getAmount()+count);
 
         return transactionService.transactionDeposit(transaction);

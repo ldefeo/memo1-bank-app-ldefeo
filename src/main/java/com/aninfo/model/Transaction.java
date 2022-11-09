@@ -5,13 +5,11 @@ import javax.persistence.*;
 @Entity
 public class Transaction {
 
+    @Id
+    private Long transactionId;
     private Double amount;
 
     private Long cbu;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long transactionId;
 
     public Transaction(){
 

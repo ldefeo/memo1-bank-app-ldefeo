@@ -95,7 +95,7 @@ public class Memo1BankApp {
 
 	@PostMapping("/accounts/deposit")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Transaction newTransactionDeposit(@RequestBody Transaction transaction){
+	public Transaction newDeposit(@RequestBody Transaction transaction){
 		return accountService.newAccountTransactionDeposit(transaction);
 	}
 

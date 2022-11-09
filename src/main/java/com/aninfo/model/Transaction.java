@@ -17,7 +17,7 @@ public class Transaction {
 
     }
 
-    public void setTransactionId(Long transactionID){
+    public void setTransactionId(Long transactionId){
         this.transactionId = transactionId;
     }
 

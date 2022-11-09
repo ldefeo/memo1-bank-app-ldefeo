@@ -66,7 +66,10 @@ public class TransactionService {
 
     public Double applyDescount(Double sum){
 
-        if (sum >= 2000 && sum <= 5000){
+        if(sum <= 0){
+            throw new DepositNegativeSumException("negativo no se puede");
+        }
+        else if (sum >= 2000 && sum <= 5000){
             sum *= 1.1;
         }else if(sum > 5000){
             sum += 500;

@@ -80,7 +80,10 @@ public class AccountService {
 
     public Transaction newTransactionDeposit(Transaction transaction){
         Double count = 0.0;
-        if(transaction.getAmount() >= 2000 && transaction.getAmount() <= 5000){
+        if(transaction.getAmount() <= 0){
+            throw new DepositNegativeSumException("no se puede depositar negativo");
+        }
+        else if(transaction.getAmount() >= 2000 && transaction.getAmount() <= 5000){
             count = transaction.getAmount()*0.1;
         }else if(transaction.getAmount() > 5000){
             count = 500.00;

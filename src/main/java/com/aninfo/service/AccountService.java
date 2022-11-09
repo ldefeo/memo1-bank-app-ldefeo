@@ -2,6 +2,7 @@ package com.aninfo.service;
 
 import com.aninfo.exceptions.DepositNegativeSumException;
 import com.aninfo.exceptions.InsufficientFundsException;
+import com.aninfo.exceptions.InvalidTransactionTypeException;
 import com.aninfo.model.Account;
 import com.aninfo.model.Transaction;
 import com.aninfo.repository.AccountRepository;
@@ -65,6 +66,9 @@ public class AccountService {
             count = 500.0;
         }
         Account account = accountRepository.findAccountByCbu(cbu);
+        if(account == null){
+            throw new InvalidTransactionTypeException("no existe transaccion");
+        }
         account.setBalance(account.getBalance() + sum + count);
         accountRepository.save(account);
 
@@ -72,8 +76,11 @@ public class AccountService {
     }
 
     public Transaction newAccountTransactionWithdraw(Transaction transaction){
-
-        withdraw(accountRepository.findAccountByCbu(transaction.getCbu()).getCbu(),transaction.getAmount());
+        Account account = accountRepository.findAccountByCbu(transaction.getCbu());
+        if(account == null){
+            throw new InvalidTransactionTypeException("no existe transaccion para retiro");
+        }
+        withdraw(account.getCbu(),transaction.getAmount());
 
         return transactionService.transactionWithdraw(transaction);
     }
@@ -88,7 +95,11 @@ public class AccountService {
         }else if(transaction.getAmount() > 5000){
             count = 500.00;
         }
-        deposit(accountRepository.findAccountByCbu(transaction.getCbu()).getCbu(),transaction.getAmount()+count);
+        Account account = accountRepository.findAccountByCbu(transaction.getCbu());
+        if(account == null){
+            throw new InvalidTransactionTypeException("no existe transaccion");
+        }
+        deposit(account.getCbu(),transaction.getAmount()+count);
 
         return transactionService.transactionDeposit(transaction);
     }
